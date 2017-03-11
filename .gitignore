@@ -39,3 +39,7 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+
+
+# real config data
+etc/config.php
