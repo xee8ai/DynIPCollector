@@ -82,7 +82,7 @@ elseif ($cur_env['context'] == 'webserver') {
 		$cur_env['host'] = $_GET['host'];
 	}
 	else {
-		$msg =  "Missing or wrong most";
+		$msg =  "Missing or wrong host";
 		$log->error($msg);
 		echo $msg;
 		exit(1);
@@ -120,9 +120,10 @@ elseif (
 elseif (
 	($cur_env['context'] == 'webserver')
 	&&
-	($cur_env['method'] == 'src/WebserverProvider.php')
+	($cur_env['method'] == 'get')
 ) {
 	// start the webserver getter
+	require_once('src/WebserverProvider.php');
 	$class = new WebserverProvider($config, $cur_env, $log);
 }
 else {
