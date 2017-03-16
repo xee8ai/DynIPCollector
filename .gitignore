@@ -43,3 +43,5 @@ tags
 
 # real config data
 etc/config.php
+log
+data
