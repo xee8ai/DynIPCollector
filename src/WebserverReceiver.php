@@ -1,14 +1,16 @@
 <?php
 
-require_once('DynIPCollectorBase.php');
+require_once('WebserverBase.php');
 
-class WebserverReceiver extends DynIPCollectorBase {
+class WebserverReceiver extends WebserverBase {
 
 	public function run() {
 
-		$this->data_file = 'data/'.$this->cur_env['host'].'.ip';
+		$this->data_file = 'data/'.$this->cur_env['host'].'.php';
 
-		$this->_create_data();
+		if (!$this->_create_data()) {
+			return false;
+		}
 
 		$this->ip = $_SERVER['REMOTE_ADDR'];
 
@@ -16,29 +18,6 @@ class WebserverReceiver extends DynIPCollectorBase {
 		$this->_store_ip();
 	}
 
-	protected function _create_data() {
-
-		$this->data = [];
-		$this->data['secret'] = $this->config['secret'];
-
-		if (!array_key_exists('time', $_GET)) {
-			$msg = "Time not given";
-			$this->log->error($msg);
-			echo $msg;
-			exit(1);
-		}
-		$this->data['timestamp'] = $_GET['time'];
-
-		if (!array_key_exists('hash', $_GET)) {
-			$msg = "Hash not given";
-			$this->log->error($msg);
-			echo $msg;
-			exit(1);
-		}
-		$this->data['hash'] = $_GET['hash'];
-
-		$this->data['host'] = $this->cur_env['host'];
-	}
 
 	protected function _show_ip() {
 		echo $this->ip;
@@ -47,7 +26,8 @@ class WebserverReceiver extends DynIPCollectorBase {
 	protected function _store_ip() {
 
 		if ($this->_validate_data()) {
-			file_put_contents($this->data_file, $this->data['timestamp']." ".$this->ip."\n");
+			$content = "<?php\n\$ip_content = ['time'=>".$this->data['timestamp'].", 'ip'=>'".$this->ip."'];\n";
+			file_put_contents($this->data_file, $content);
 		}
 
 	}
