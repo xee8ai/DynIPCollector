@@ -11,11 +11,18 @@ class Log {
 
 	public function __construct($subdir='global', $lvl='error', $logging_enabled=True) {
 
+		if (php_sapi_name() == 'cli') {
+			$base_dir = realpath(dirname(__FILE__));
+		}
+		else {
+			$base_dir = '.';
+		}
+
 		$this->logging_enabled = $logging_enabled;
 		$this->lvl = $lvl;
 
 		if ($this->logging_enabled) {
-			$this->logdir = 'log/'.$subdir;
+			$this->logdir = $base_dir.'/log/'.$subdir;
 			if (!is_dir($this->logdir)) {
 				mkdir($this->logdir, 0750, true);
 			}

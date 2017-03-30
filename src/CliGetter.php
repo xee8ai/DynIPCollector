@@ -13,6 +13,8 @@ class CliGetter extends CliBase {
 		$this->log->info('Returned data: '.$webserver_return);
 
 		$ip = explode(' ', $webserver_return)[0];
+
+		// simply write the IP to CLI – e.g. for use in bash scripts or the like
 		echo $ip;
 
 	}

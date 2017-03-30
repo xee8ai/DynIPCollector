@@ -3,7 +3,7 @@
 require_once('etc/config.php');
 require_once('logger.php');
 
-$log = new Log('', $conf_log_level, $conf_logging_enabled);
+$log = new Log('global', $conf_log_level, $conf_logging_enabled);
 
 $cur_env = array();
 
